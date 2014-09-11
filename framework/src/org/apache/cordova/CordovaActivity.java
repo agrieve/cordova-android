@@ -99,7 +99,6 @@ public class CordovaActivity extends Activity implements CordovaInterface {
 
     // Plugin to call when activity result is received
     protected CordovaPlugin activityResultCallback = null;
-    protected boolean activityResultKeepRunning;
 
     /*
      * The variables below are used to cache some of the activity properties.
@@ -398,17 +397,7 @@ public class CordovaActivity extends Activity implements CordovaInterface {
         // receive user input. Workaround for some devices (Samsung Galaxy Note 3 at least)
         this.getWindow().getDecorView().requestFocus();
 
-        this.appView.handleResume(this.keepRunning, this.activityResultKeepRunning);
-
-        // If app doesn't want to run in background
-        if (!this.keepRunning || this.activityResultKeepRunning) {
-
-            // Restore multitasking state
-            if (this.activityResultKeepRunning) {
-                this.keepRunning = this.activityResultKeepRunning;
-                this.activityResultKeepRunning = false;
-            }
-        }
+        this.appView.handleResume(this.keepRunning);
     }
 
     /**
@@ -484,14 +473,6 @@ public class CordovaActivity extends Activity implements CordovaInterface {
      */
     public void startActivityForResult(CordovaPlugin command, Intent intent, int requestCode) {
         this.activityResultCallback = command;
-        this.activityResultKeepRunning = this.keepRunning;
-
-        // If multitasking turned on, then disable it for activities that return results
-        if (command != null) {
-            this.keepRunning = false;
-        }
-
-        // Start activity
         super.startActivityForResult(intent, requestCode);
     }
 

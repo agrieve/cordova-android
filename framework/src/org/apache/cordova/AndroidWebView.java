@@ -562,6 +562,7 @@ public class AndroidWebView extends WebView implements CordovaWebView {
         return boundKeyCodes.contains(keyCode);
     }
 
+    @Override
     public void handlePause(boolean keepRunning)
     {
         LOG.d(TAG, "Handle the pause");
@@ -580,7 +581,8 @@ public class AndroidWebView extends WebView implements CordovaWebView {
         }
     }
     
-    public void handleResume(boolean keepRunning, boolean activityResultKeepRunning)
+    @Override
+    public void handleResume(boolean keepRunning)
     {
         this.loadUrl("javascript:try{cordova.fireDocumentEvent('resume');}catch(e){console.log('exception firing resume event from native');};");
         
